@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 import logger from 'jet-logger';
+import mongoose from 'mongoose';
 import morgan from 'morgan';
 import path from 'path';
 
@@ -16,6 +17,11 @@ import EnvVars, { NodeEnvs } from './common/constants/env';
 ******************************************************************************/
 
 const app = express();
+
+// Connect to MongoDB
+mongoose.connect(EnvVars.MongoUri)
+  .then(() => logger.info('Connected to MongoDB'))
+  .catch(err => logger.err(err));
 
 // **** Middleware **** //
 

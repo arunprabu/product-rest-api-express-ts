@@ -1,9 +1,5 @@
-import jetEnv, { num } from 'jet-env';
+import jetEnv, { num, str } from 'jet-env';
 import { isValueOf } from 'jet-validators';
-
-/******************************************************************************
-                                 Constants
-******************************************************************************/
 
 // NOTE: These need to match the names of your ".env" files
 export const NodeEnvs = {
@@ -12,17 +8,10 @@ export const NodeEnvs = {
   PRODUCTION: 'production',
 } as const;
 
-/******************************************************************************
-                                 Setup
-******************************************************************************/
-
 const EnvVars = jetEnv({
   NodeEnv: isValueOf(NodeEnvs),
   Port: num,
+  MongoUri: str,
 });
-
-/******************************************************************************
-                            Export default
-******************************************************************************/
 
 export default EnvVars;

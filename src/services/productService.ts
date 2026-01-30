@@ -1,22 +1,58 @@
 import { Req, Res } from "@src/routes/common/express-types";
+import Product from "@src/models/Product";
 
-export function getProducts(_req: Req, res: Res) {
-  res.json('will get products from db -- from Separate service');
+export async function getProducts(_req: Req, res: Res) {
+  try {
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
 }
 
-export function addProduct(_req: Req, res: Res) {
-  res.json('will implement adding service -- from Separate service');
+export async function addProduct(req: Req, res: Res) {
+  try {
+    const product = new Product(req.body);
+    await product.save();
+    res.status(201).json(product);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
 }
 
-export function getProductById(_req: Req, res: Res) {
-  res.json('will get product by id');
+export async function getProductById(req: Req, res: Res) {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
 }
 
-export function updateProductById(_req: Req, res: Res) {
-  res.json('will update product by id');
+export async function updateProductById(req: Req, res: Res) {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
 }
 
-export function deleteProductById(_req: Req, res: Res) {
-  res.json('will delete product by id');
+export async function deleteProductById(req: Req, res: Res) {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
 }
 
