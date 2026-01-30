@@ -1,31 +1,25 @@
 import { Router } from 'express';
-import Paths from '@src/common/constants/Paths';
-import ProductRoutes from './ProductRoutes';
+import { getProducts, addProduct, getProductById, updateProductById, deleteProductById } from '@src/services/productService';
 
 const apiRouter = Router();
+// api/v1
+apiRouter.get('/', (_req, res) => {
+  res.json('Welcome to API Router');
+});
 
-// ----------------------- Implement UsersRouter --------------------------------- //
+// api/v1/products - GET
+apiRouter.get('/products', getProducts);
 
-// const userRouter = Router();
+// api/v1/products - POST
+apiRouter.post('/products', addProduct);
 
-// userRouter.get(Paths.Users.Get, UserRoutes.getAll);
-// userRouter.post(Paths.Users.Add, UserRoutes.add);
-// userRouter.put(Paths.Users.Update, UserRoutes.update);
-// userRouter.delete(Paths.Users.Delete, UserRoutes.delete);
+// api/v1/products/:id
+apiRouter.get('/products/:id', getProductById);
 
-// apiRouter.use(Paths.Users._, userRouter);
+// api/v1/products/:id
+apiRouter.put('/products/:id', updateProductById);
 
-
-// ----------------------- Implement ProductRouter --------------------------------- //
-const productRouter = Router();
-productRouter.get(Paths.Products.Get, ProductRoutes.getAll);
-productRouter.post(Paths.Products.Add, ProductRoutes.add);
-productRouter.get(Paths.Products.GetById, ProductRoutes.getById);
-productRouter.put(Paths.Products.Update, ProductRoutes.update);
-productRouter.delete(Paths.Products.Delete, ProductRoutes.delete);
-
-
-// The following was the missed line in yesterday's implementtion
-apiRouter.use(Paths.Products._, productRouter);
+// api/v1/products/:id
+apiRouter.delete('/products/:id', deleteProductById);
 
 export default apiRouter;
