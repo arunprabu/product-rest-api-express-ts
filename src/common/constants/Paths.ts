@@ -9,6 +9,8 @@ const Paths = {
     GetById: '/:id',
     Update: '/:id',
     Delete: '/:id',
+    LowStock: '/stock/low',
+    CategoryCount: '/stats/category-count',
   }
 } as const;
 

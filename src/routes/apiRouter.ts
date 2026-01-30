@@ -18,6 +18,12 @@ const apiRouter = Router();
 
 // ----------------------- Implement ProductRouter --------------------------------- //
 const productRouter = Router();
+
+// Special routes must come before parameterized routes
+productRouter.get(Paths.Products.LowStock, ProductRoutes.getLowStock);
+productRouter.get(Paths.Products.CategoryCount, ProductRoutes.getCategoryCount);
+
+// Standard CRUD routes
 productRouter.get(Paths.Products.Get, ProductRoutes.getAll);
 productRouter.post(Paths.Products.Add, ProductRoutes.add);
 productRouter.get(Paths.Products.GetById, ProductRoutes.getById);
