@@ -13,13 +13,13 @@ apiRouter.get('/products', getProducts);
 // api/v1/products - POST
 apiRouter.post('/products', addProduct);
 
-// api/v1/products/:id
+// api/v1/products/:id - GET.  (id is the url parameter)
 apiRouter.get('/products/:id', getProductById);
 
-// api/v1/products/:id
+// api/v1/products/:id - PUT  (id is the url parameter)
 apiRouter.put('/products/:id', updateProductById);
 
-// api/v1/products/:id
+// api/v1/products/:id - DELETE  (id is the url parameter)
 apiRouter.delete('/products/:id', deleteProductById);
 
 export default apiRouter;
