@@ -1,5 +1,6 @@
 import { Req, Res } from "@src/routes/common/express-types";
 import Product from "@src/models/Product";
+import { validationResult } from "express-validator";
 
 export async function getProducts(_req: Req, res: Res) {
   try {
