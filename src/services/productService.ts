@@ -15,7 +15,7 @@ export async function addProduct(req: Req, res: Res) {
   console.log("Inside Service");
   // let's receive the form data from rest api client / front end app
   console.log(req.body);
-  // TODO:  validate the form data using jet-validators
+  // TODO:  validate the form data using express-validator
 
   try {
     const product = new Product(req.body); // document draft created
