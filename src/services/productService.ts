@@ -11,18 +11,23 @@ export async function getProducts(_req: Req, res: Res) {
   }
 }
 
-export async function addProduct(req: Req, res: Res) {
-  console.log("Inside Service");
-  // let's receive the form data from rest api client / front end app
-  console.log(req.body);
-  // TODO:  validate the form data using express-validator
+export const addProduct = async (req: Req, res: Res) => {
+  // Check for validation errors from express-validator middleware
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  console.log(req.body); // form data from from postmand or front end apps
 
   try {
-    const product = new Product(req.body); // document draft created
-    await product.save(); // saving the document to the database
+    // 2. insert product data to products collection using js
+    const product = new Product(req.body); // draft product document
+    await product.save();
+    // 3. send back response to client
     res.status(201).json(product);
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
+    res.status(500).json({ message: 'Error adding product', error });
   }
 }
 
@@ -37,21 +42,24 @@ export async function getProductById(req: Req, res: Res) {
   }
 }
 
-export async function updateProductById(req: Req, res: Res) {
-  console.log(req.params.id); // what id to be updated
+export const updateProductById = async (req: Req, res: Res) => {
+  // Check for validation errors from express-validator middleware
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  console.log(req.params.id); // what product to be updated
   console.log(req.body); // updateable form data
-  // req.params.id is typecast to objectId (_id)
 
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
     res.status(200).json(product);
   } catch (error) {
-    res.status(400).json({ error: "Sorry! some error occurred while updating the product! try again later" });
+    res.status(500).json({ message: 'Error updating products', error });
   }
 }
+
 
 export async function deleteProductById(req: Req, res: Res) {
   try {
