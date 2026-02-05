@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import helmet from 'helmet';
 import logger from 'jet-logger';
@@ -12,19 +13,15 @@ import BaseRouter from '@src/routes/apiRouter';
 
 import EnvVars, { NodeEnvs } from './common/constants/env';
 
-/******************************************************************************
-                                Setup
-******************************************************************************/
-
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect(EnvVars.MongoUri)
+mongoose
+  .connect(EnvVars.MongoUri)
   .then(() => logger.info('Connected to MongoDB'))
-  .catch(err => logger.err(err));
+  .catch((err) => logger.err(err));
 
 // **** Middleware **** //
-
 // Basic middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -42,8 +39,9 @@ if (EnvVars.NodeEnv === NodeEnvs.PRODUCTION) {
   }
 }
 
+app.use(cors()); // enabling CORS for all domains
 // Add APIs, must be after middleware
-app.use("/api/v1", BaseRouter);
+app.use('/api/v1', BaseRouter);
 
 // Add error handler
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
@@ -72,9 +70,6 @@ app.use(express.static(staticDir));
 app.get('/', (_: Request, res: Response) => {
   return res.send('Welcome to Products API Server');
 });
-
-
-
 
 /******************************************************************************
                                 Export default
